@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevStore | Portfólio Full Stack</title>
+    <!-- Google Fonts & Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --success: #10b981;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --white: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-shadow: none; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* Header Estilizado */
+        header {
+            background-color: var(--white);
+            padding: 1rem 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary); text-decoration: none; }
+        .logo span { color: var(--dark); }
+
+        .cart-btn {
+            background: var(--light);
+            border: 1px solid #e2e8f0;
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cart-btn:hover { background: #f1f5f9; border-color: var(--primary); }
+
+        #cart-count {
+            background: var(--primary);
+            color: white;
+            font-size: 0.75rem;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        /* Grid de Produtos */
+        main { padding: 3rem 10%; min-height: 80vh; }
+
+        .section-title { margin-bottom: 2.5rem; font-size: 2rem; font-weight: 700; text-align: center; }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2.5rem;
+        }
+
+        /* Card de Produto Profissional */
+        .product-card {
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            background: #f1f5f9;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .product-card:hover .product-image img { transform: scale(1.1); }
+
+        .product-info { padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; }
+
+        .product-info h3 { font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 600; }
+
+        .price { 
+            color: var(--primary); 
+            font-weight: 800; 
+            font-size: 1.4rem; 
+            margin-bottom: 1.5rem; 
+            margin-top: auto;
+        }
+
+        .btn-add {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-add:hover { background: var(--primary-hover); }
+
+        /* Modal Carrinho Lateral */
+        #cart-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            justify-content: flex-end;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+
+        .cart-content {
+            background: var(--white);
+            width: 100%;
+            max-width: 450px;
+            height: 100%;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+
+        .cart-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 2.5rem; 
+        }
+
+        .cart-items { flex-grow: 1; overflow-y: auto; }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .cart-footer { border-top: 2px solid #f1f5f9; padding-top: 1.5rem; }
+
+        .total { 
+            font-size: 1.4rem; 
+            font-weight: 800; 
+            margin-bottom: 1.5rem; 
+            display: flex; 
+            justify-content: space-between; 
+        }
+
+        .btn-checkout {
+            background: var(--success);
+            color: white;
+            width: 100%;
+            padding: 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-checkout:hover { opacity: 0.9; }
+
+        /* Estilo para Carrinho Vazio */
+        .empty-cart { text-align: center; color: var(--gray); margin-top: 3rem; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#" class="logo" onclick="location.reload()">DEV<span>STORE</span></a>
+        <button class="cart-btn" onclick="toggleCart()">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <span id="cart-count">0</span>
+        </button>
+    </header>
+
+    <main id="main-content">
+        <h2 class="section-title">Tecnologia em Destaque</h2>
+        <div id="products-container" class="products-grid">
+            <p style="grid-column: 1/-1; text-align: center;">Buscando produtos...</p>
+        </div>
+    </main>
+
+    <!-- Modal Carrinho -->
+    <div id="cart-modal">
+        <div class="cart-content">
+            <div class="cart-header">
+                <h3>Seu Carrinho</h3>
+                <button onclick="toggleCart()" style="border:none; background:none; cursor:pointer;"><i class="fa-solid fa-xmark fa-xl"></i></button>
+            </div>
+            <div id="cart-items" class="cart-items">
+                <!-- Itens injetados via JS -->
+            </div>
+            <div class="cart-footer">
+                <div class="total">
+                    <span>Total</span>
+                    <span id="cart-total">R$ 0,00</span>
+                </div>
+                <button class="btn-checkout" onclick="checkout()">Finalizar Compra</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000';
+        let cart = [];
+
+        // 1. Buscar produtos da API
+        async function fetchProducts() {
+            try {
+                const response = await fetch(`${API_URL}/products`);
+                const products = await response.json();
+                renderProducts(products);
+            } catch (error) {
+                console.error("Erro:", error);
+                document.getElementById('products-container').innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center;">
+                        <i class="fa-solid fa-triangle-exclamation" style="font-size: 2rem; color: #ef4444;"></i>
+                        <p style="margin-top: 1rem;">Opa! O servidor está offline.</p>
+                    </div>`;
+            }
+        }
+
+        // 2. Mostrar produtos (Injeta URLs de imagens fake se não houver no banco)
+        function renderProducts(products) {
+            const container = document.getElementById('products-container');
+            
+            // Lista de URLs fake caso o banco esteja vazio/sem imagens
+            const fallbackImages = [
+                "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=500",
+                "https://images.unsplash.com/photo-1547082299-de196ea013d6?w=500",
+                "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?w=500",
+                "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500"
+            ];
+
+            container.innerHTML = products.map((product, index) => {
+                const img = product.image_url || fallbackImages[index % fallbackImages.length];
+                return `
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="${img}" alt="${product.name}">
+                    </div>
+                    <div class="product-info">
+                        <h3>${product.name}</h3>
+                        <p class="price">R$ ${product.price.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</p>
+                        <button class="btn-add" onclick="addToCart(${product.id}, '${product.name}', ${product.price}, event)">
+                            <i class="fa-solid fa-plus"></i> Adicionar
+                        </button>
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        // 3. Adicionar ao Carrinho com Feedback
+        function addToCart(id, name, price, event) {
+            cart.push({ id, name, price });
+            updateCartUI();
+
+            // Feedback Visual no Botão
+            const btn = event.currentTarget;
+            const originalHTML = btn.innerHTML;
+            btn.style.background = "#10b981";
+            btn.innerHTML = '<i class="fa-solid fa-check"></i> Adicionado';
+            
+            setTimeout(() => {
+                btn.style.background = "";
+                btn.innerHTML = originalHTML;
+            }, 800);
+        }
+
+        // 4. Atualizar Interface do Carrinho
+        function updateCartUI() {
+            document.getElementById('cart-count').innerText = cart.length;
+            const cartItemsContainer = document.getElementById('cart-items');
+            
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<div class="empty-cart"><i class="fa-solid fa-cart-ghost fa-3x"></i><p style="margin-top:1rem">Vazio...</p></div>';
+            } else {
+                cartItemsContainer.innerHTML = cart.map((item) => `
+                    <div class="cart-item">
+                        <div>
+                            <p style="font-weight:600">${item.name}</p>
+                            <small style="color:var(--gray)">R$ ${item.price.toFixed(2)}</small>
+                        </div>
+                        <i class="fa-solid fa-trash-can" style="color:#ef4444; cursor:pointer" onclick="removeItem(${cart.indexOf(item)})"></i>
+                    </div>
+                `).join('');
+            }
+
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            document.getElementById('cart-total').innerText = `R$ ${total.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+        }
+
+        function removeItem(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cart-modal');
+            modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        // 5. Finalizar Compra com Tela de Sucesso
+        async function checkout() {
+            if (cart.length === 0) return alert("Adicione itens primeiro!");
+
+            const orderData = {
+                total: cart.reduce((sum, item) => sum + item.price, 0)
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/orders`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderData)
+                });
+
+                if (response.ok) {
+                    toggleCart();
+                    showSuccessScreen();
+                }
+            } catch (error) {
+                alert("Erro ao conectar com o banco.");
+            }
+        }
+
+        function showSuccessScreen() {
+            document.getElementById('main-content').innerHTML = `
+                <div style="text-align:center; padding: 10vh 0; animation: fadeIn 0.5s ease;">
+                    <i class="fa-solid fa-circle-check" style="font-size: 5rem; color: var(--success);"></i>
+                    <h2 style="margin-top:2rem; font-size: 2.5rem;">Pedido Confirmado!</h2>
+                    <p style="color:var(--gray); margin-top:1rem; font-size: 1.2rem;">Sua compra foi registrada no SQLite com sucesso.</p>
+                    <button onclick="location.reload()" class="btn-add" style="width:auto; margin: 3rem auto; padding: 1rem 3rem;">
+                        Comprar Mais
+                    </button>
+                </div>
+            `;
+        }
+
+        // Inicializar
+        fetchProducts();
+    </script>
+</body>
+</html>
