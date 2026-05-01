@@ -20,6 +20,38 @@ projeto01/
 
 ---
 
+## Gestão do projeto
+
+### Gerenciamento do Backlog
+
+![Kanban](doc/imagem/kanban.png)
+
+### Prototipação UI/UX
+
+![figma](doc/imagem/figma.png)
+
+
+### 📅 Gestão da Equipe: Cerimônias do Scrum
+
+1. **Refinamento (Backlog Refinement)**
+   Refinamento do backlog
+
+2. **Sprint Planning (Planejamento da Sprint)**
+   Define o que será feito na sprint e como o trabalho será realizado.
+
+3. **Daily Scrum (Daily / Reunião diária)**
+   Reunião curta (até 15 min) para alinhar o progresso e identificar impedimentos.
+
+4. **Sprint Review (Revisão da Sprint)**
+   Demonstração do que foi entregue para stakeholders e coleta de feedback.
+
+5. **Sprint Retrospective (Retrospectiva)**
+   Momento para o time refletir sobre o processo e melhorar continuamente.
+
+
+## Visão geral do projeto
+
+
 ## Backends
 
 ### 1) Node.js (Express)
