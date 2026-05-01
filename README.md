@@ -1,122 +1,182 @@
-# Projeto E-commerce — Full Stack (Java | Node.js | Python | Frontend)
+# Projeto E-commerce — Full Stack (Java | Node.js | Python | Web | Mobile)
 
-Projeto didático com três backends independentes e um frontend estático, todos conectados a um banco de dados SQLite local.
+Projeto didático de e-commerce com múltiplos backends e múltiplos frontends no mesmo repositório.
 
 ---
 
-## Estrutura do Projeto
+## Estrutura atual
 
 ```
 projeto01/
-├── backend-java/      → API REST com Spring Boot (Java)
-├── backend-node/      → API REST com Express (Node.js)
-├── backend-python/    → API REST com FastAPI (Python)
-└── frontend/          → Interface HTML/CSS/JS (estático)
+├── backend-java/         # API REST com Spring Boot
+├── backend-node/         # API REST com Express + SQLite
+├── backend-python/       # API REST com FastAPI + SQLAlchemy
+├── frontend-html/        # Frontend HTML/CSS/JS puro
+├── frontend-react/       # Frontend React + Vite
+├── framework-nextjs/     # App Next.js com rotas API internas
+├── mobile-react-native/  # App mobile com Expo/React Native
+└── doc/geral/            # PRD, sprint, tarefas e tech spec
 ```
 
 ---
 
-## 🐍 Backend Python (FastAPI)
+## Backends
 
-### Pré-requisitos
-- Python 3.10+
-- pip
+### 1) Node.js (Express)
 
-### Instalar dependências
-
-```bash
-cd backend-python
-pip install fastapi uvicorn sqlalchemy
-```
-
-### Rodar o servidor
-
-```bash
-uvicorn main:app --reload
-```
-
-Acesse: [http://localhost:8000](http://localhost:8000)  
-Documentação automática: [http://localhost:8000/docs](http://localhost:8000/docs)
-
----
-
-## 🟩 Backend Node.js (Express)
-
-### Pré-requisitos
+Pré-requisitos:
 - Node.js 18+
 - npm
 
-### Instalar dependências
+Execução:
 
 ```bash
 cd backend-node
 npm install
-```
-
-### Rodar o servidor
-
-```bash
 node server.js
 ```
 
-Acesse: [http://localhost:3000](http://localhost:3000)
+URL base: http://localhost:3000
+
+Endpoints:
+- `GET /health`
+- `GET /products`
+- `GET /products/:id`
+- `POST /products`
+- `DELETE /products/:id`
+- `POST /orders`
 
 ---
 
-## ☕ Backend Java (Spring Boot)
+### 2) Python (FastAPI)
 
-### Pré-requisitos
+Pré-requisitos:
+- Python 3.11+
+- Poetry
+
+Execução:
+
+```bash
+cd backend-python
+poetry install
+poetry run uvicorn app.main:app --reload --port 4000
+```
+
+URL base: http://127.0.0.1:4000  
+Swagger: http://127.0.0.1:4000/docs
+
+Endpoints principais:
+- `GET /products`
+- `POST /orders`
+
+---
+
+### 3) Java (Spring Boot)
+
+Pré-requisitos:
 - Java 17+
-- Maven (ou usar o wrapper `mvnw` incluído no projeto)
 
-### Instalar dependências e compilar
+Execução:
 
 ```bash
 cd backend-java
-./mvnw install
-```
-
-> No Windows: `mvnw.cmd install`
-
-### Rodar o servidor
-
-```bash
 ./mvnw spring-boot:run
 ```
 
-> No Windows: `mvnw.cmd spring-boot:run`
-
-Acesse: [http://localhost:8080](http://localhost:8080)
-
----
-
-## 🌐 Frontend (HTML estático)
-
-Não requer instalação. Abra diretamente no navegador:
+No Windows:
 
 ```bash
-cd frontend
-# Abra o arquivo desejado no navegador:
-# index.html    → versão atual
-# indexV1.html  → versão 1
-# indexV2.html  → versão 2
+mvnw.cmd spring-boot:run
 ```
 
-Ou use a extensão **Live Server** do VS Code para servir com hot-reload.
+URL base: http://localhost:8080
+
+Endpoints principais:
+- `GET /api/products`
+- `GET /api/products/{id}`
+- `POST /api/products`
+- `DELETE /api/products/{id}`
 
 ---
 
-## Endpoints disponíveis (todos os backends)
+## Frontends
 
-| Método | Rota        | Descrição              |
-|--------|-------------|------------------------|
-| GET    | /products   | Lista todos os produtos|
-| POST   | /products   | Cria um novo produto   |
+### 1) HTML estático
+
+```bash
+cd frontend-html
+```
+
+Abrir no navegador:
+- `index.html` (principal)
+- `indexV1.html`
+- `indexV2.html`
+
+> Dica: usar Live Server no VS Code.
 
 ---
 
-## Observações
+### 2) React + Vite
 
-- Cada backend é independente; rode apenas o que for utilizar.
-- O frontend consome a API via `fetch`. Altere a URL base no `index.html` conforme o backend em uso.
-- O banco de dados SQLite é criado automaticamente na primeira execução (Python e Node.js). O Java utiliza `data.sql` para popular o banco H2/SQLite na inicialização.
+```bash
+cd frontend-react
+npm install
+npm run dev
+```
+
+URL: http://localhost:5173
+
+Observação:
+- Possui seletor de backend (Node, Python, Java).
+- Usa fallback com dados mock quando a API não responde.
+
+---
+
+### 3) Next.js
+
+```bash
+cd framework-nextjs
+npm install
+npm run dev
+```
+
+URL: http://localhost:3000
+
+Rotas API internas:
+- `GET /api/products`
+- `POST /api/products`
+- `POST /api/orders`
+
+---
+
+### 4) Mobile (Expo / React Native)
+
+```bash
+cd mobile-react-native
+npm install
+npm run start
+```
+
+Também disponível:
+- `npm run android`
+- `npm run ios`
+- `npm run web`
+
+---
+
+## Documentação do projeto
+
+Arquivos de apoio em `doc/geral/`:
+- `prd.md`
+- `Sprint.md`
+- `tasks.md`
+- `techspec.md`
+
+---
+
+## Observações importantes
+
+- Cada backend é independente.
+- O frontend React foi preparado para integração com os 3 backends.
+- Node, Python e Java usam SQLite no projeto (com configuração específica por stack).
+- Para evitar conflito de porta, rode os módulos conforme necessidade (ex.: Node e Next usam `3000`).
