@@ -296,3 +296,4 @@ Isso vem dos estudos de Jakob Nielsen, um dos maiores nomes de UX.
 ## Implantação
 
 - Deploy
+- observabilidade
