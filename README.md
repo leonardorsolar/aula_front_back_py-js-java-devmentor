@@ -1,23 +1,8 @@
 # Projeto E-commerce — Full Stack (Java | Node.js | Python | Web | Mobile)
 
-Projeto didático de e-commerce com múltiplos backends e múltiplos frontends no mesmo repositório.
+Desenvolvimento Web moderno
 
----
-
-## Estrutura atual
-
-```
-projeto01/
-├── backend-java/         # API REST com Spring Boot
-├── backend-node/         # API REST com Express + SQLite
-├── backend-python/       # API REST com FastAPI + SQLAlchemy
-├── frontend-html/        # Frontend HTML/CSS/JS puro
-├── frontend-react/       # Frontend React + Vite
-├── framework-nextjs/     # App Next.js com rotas API internas
-├── mobile-react-native/  # App mobile com Expo/React Native
-└── doc/geral/            # PRD, sprint, tarefas e tech spec
-```
-
+![Diagrama](doc/imagem/diagrama.png)
 ---
 
 ## Gestão do projeto
@@ -48,6 +33,21 @@ projeto01/
 5. **Sprint Retrospective (Retrospectiva)**
    Momento para o time refletir sobre o processo e melhorar continuamente.
 
+## Estrutura atual
+
+```
+projeto01/
+├── backend-java/         # API REST com Spring Boot
+├── backend-node/         # API REST com Express + SQLite
+├── backend-python/       # API REST com FastAPI + SQLAlchemy
+├── frontend-html/        # Frontend HTML/CSS/JS puro
+├── frontend-react/       # Frontend React + Vite
+├── framework-nextjs/     # App Next.js com rotas API internas
+├── mobile-react-native/  # App mobile com Expo/React Native
+└── doc/geral/            # PRD, sprint, tarefas e tech spec
+```
+
+---
 
 ## Visão geral do projeto
 
