@@ -289,6 +289,7 @@ Arquivos de apoio em `doc/geral/`:
 ## Testes
 
 - Plano de Teste
+- Teste de performance com K6
 
 
 ## Implantação
