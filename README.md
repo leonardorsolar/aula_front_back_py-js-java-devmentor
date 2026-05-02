@@ -290,8 +290,9 @@ Arquivos de apoio em `doc/geral/`:
 
 - Plano de Teste
 - Teste de performance com K6
-
-
+- Teste de usabilidade:
+Com cerca de 5 usuários, você consegue identificar ~85% dos problemas de usabilidade.
+Isso vem dos estudos de Jakob Nielsen, um dos maiores nomes de UX.
 ## Implantação
 
 - Deploy
