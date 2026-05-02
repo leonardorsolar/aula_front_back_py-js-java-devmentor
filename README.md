@@ -285,6 +285,14 @@ Arquivos de apoio em `doc/geral/`:
 - Node, Python e Java usam SQLite no projeto (com configuração específica por stack).
 - Para evitar conflito de porta, rode os módulos conforme necessidade (ex.: Node e Next usam `3000`).
 
+### implementação da telemetria
+
+instrumenta o código para gerar dados:
+
+* Logs (console.log, logger)
+* Métricas (tempo de resposta, contadores)
+* Traces (requisições entre serviços)
+
 
 ## Testes
 
@@ -293,7 +301,13 @@ Arquivos de apoio em `doc/geral/`:
 - Teste de usabilidade:
 Com cerca de 5 usuários, você consegue identificar ~85% dos problemas de usabilidade.
 Isso vem dos estudos de Jakob Nielsen, um dos maiores nomes de UX.
+- observabilidade para validar comportamento
+Você usa os dados coletados para entender:
+* O sistema está lento?
+* Tem erro escondido?
+* Algo estranho acontecendo?
+
 ## Implantação
 
 - Deploy
-- observabilidade
+- Telemetria e observabilidade
