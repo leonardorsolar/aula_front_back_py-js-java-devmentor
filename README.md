@@ -1,20 +1,92 @@
 # Projeto E-commerce — Full Stack (Java | Node.js | Python | Web | Mobile)
 
-Desenvolvimento Web moderno
+Desenvolvimento de Sofwatres:
+- Planejamento
+- Engenahria de requisitos
+- Projetos
+- Implementação
+- Testes
+- Implantação
+- Manutenção
 
-![Diagrama](doc/imagem/diagrama.png)
----
+Desenvolvimento Web Moderno
 
-## Gestão do projeto
+## Planejamento 
+- Escopo
+- Tempo
+- Cronograma
+
+## Engenharia de requisitos
 
 ### Gerenciamento do Backlog
 
 ![Kanban](doc/imagem/kanban.png)
 
-### Prototipação UI/UX
+## Projetos
+
+### Projeto Arquitetural
+
+![Diagrama](doc/imagem/diagrama.png)
+
+### Projeto de interface
+
+- Prototipação UI/UX
 
 ![figma](doc/imagem/figma.png)
 
+### Projeto de banco de dados
+
+![banco de dados](doc/imagem/bancodedados.png)
+
+### Diagrama de classe
+
+```mermaid
+classDiagram
+
+class Product {
+  +int id
+  +string name
+  +float price
+}
+
+class Order {
+  +int id
+  +float total
+  +datetime created_at
+}
+
+class OrderItem {
+  +int id
+  +int quantity
+  +float price
+  +int order_id
+  +int product_id
+}
+
+Order "1" --> "many" OrderItem : contains
+Product "1" --> "many" OrderItem : included in
+```
+
+### Diagrama de atividades
+
+```mermaid
+flowchart TD
+
+A[Início] --> B[Selecionar produtos]
+B --> C[Adicionar ao carrinho]
+
+C --> D{Deseja adicionar mais produtos?}
+D -- Sim --> B
+D -- Não --> E[Criar pedido - Order]
+
+E --> F[Adicionar itens - OrderItems]
+F --> G[Calcular total do pedido]
+
+G --> H[Salvar no banco de dados]
+H --> I[Fim]
+```
+
+## Implementação
 
 ### 📅 Gestão da Equipe: Cerimônias do Scrum
 
@@ -212,3 +284,13 @@ Arquivos de apoio em `doc/geral/`:
 - O frontend React foi preparado para integração com os 3 backends.
 - Node, Python e Java usam SQLite no projeto (com configuração específica por stack).
 - Para evitar conflito de porta, rode os módulos conforme necessidade (ex.: Node e Next usam `3000`).
+
+
+## Testes
+
+- Plano de Teste
+
+
+## Implantação
+
+- Deploy
