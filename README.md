@@ -379,6 +379,7 @@ instrumenta o código para gerar dados:
 ## Testes
 
 - Plano de Teste
+- [Plano de Teste](doc/teste/plano%20de%20teste.md)
 - Teste de performance com K6
 - Teste de usabilidade:
 Com cerca de 5 usuários, você consegue identificar ~85% dos problemas de usabilidade.
