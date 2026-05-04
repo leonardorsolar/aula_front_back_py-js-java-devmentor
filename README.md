@@ -22,6 +22,8 @@ Desenvolvimento Web Moderno
 
 ![Kanban](doc/imagem/kanban.png)
 
+https://trello.com/b/cPSfnOPN/kanban-scrum-iff 
+
 ## Projetos
 
 ### Projeto Arquitetural
