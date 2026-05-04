@@ -88,6 +88,56 @@ G --> H[Salvar no banco de dados]
 H --> I[Fim]
 ```
 
+## Jornada do usuário (event storming)
+
+![jornada](doc/imagem/Jornadadousario.png)
+
+## Estrutura de Pastas
+
+```
+src/
+│
+├── modules/
+│   └── order/
+│       ├── controllers/
+│       │   └── OrderController.js
+│       │
+│       ├── services/
+│       │   └── CreateOrderService.js
+│       │   └── AddItemToOrderService.js
+│       │   └── CalculateOrderTotalService.js
+│       │
+│       ├── repositories/
+│       │   └── OrderRepository.js
+│       │
+│       ├── models/
+│       │   └── Order.js
+│       │   └── OrderItem.js
+│       │
+│       └── routes/
+│           └── order.routes.js
+│
+├── modules/
+│   └── product/
+│       ├── controllers/
+│       ├── services/
+│       ├── repositories/
+│       ├── models/
+│       └── routes/
+│
+├── shared/
+│   ├── database/
+│   │   └── connection.js
+│   │
+│   ├── middlewares/
+│   │   └── errorHandler.js
+│   │
+│   └── utils/
+│
+├── app.js
+└── server.js
+```
+
 ## Implementação
 
 ### 📅 Gestão da Equipe: Cerimônias do Scrum
