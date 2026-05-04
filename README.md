@@ -30,6 +30,36 @@ https://trello.com/b/cPSfnOPN/kanban-scrum-iff
 
 ![Diagrama](doc/imagem/diagrama.png)
 
+
+Projeto backend - MVC
+```
+src/
+├── controllers/   # recebe requisição (HTTP)
+├── models/        # dados / banco
+├── views/         # resposta (JSON ou templates)
+├── services/      # regras de negócio
+├── routes/        # define endpoints
+├── middlewares/   # interceptadores (auth, log)
+├── config/        # configs (db, env)
+└── app.js         # inicialização da aplicação
+```
+
+Projeto Frontend
+
+```
+src/
+├── components/      # componentes reutilizáveis (botão, card, input)
+├── pages/           # telas da aplicação
+├── services/        # comunicação com backend (API)
+├── hooks/           # hooks customizados
+├── context/         # estado global (ex: carrinho)
+├── routes/          # rotas da aplicação
+├── utils/           # funções auxiliares
+├── styles/          # estilos globais
+├── App.jsx
+└── main.jsx
+```
+
 ### Projeto de interface
 
 - Prototipação UI/UX
