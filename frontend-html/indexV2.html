@@ -486,6 +486,45 @@
             cursor: pointer;
             margin-top: 20px;
         }
+
+        .api-status {
+            display: none;
+            max-width: 1500px;
+            margin: 12px auto 0;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .api-status.warning {
+            display: block;
+            background: #fff4e5;
+            color: #8a4b00;
+            border: 1px solid #ffd7a3;
+        }
+
+        .api-status.success {
+            display: block;
+            background: #ecfdf3;
+            color: #136f3a;
+            border: 1px solid #9fe3b9;
+        }
+
+        .offline-screen {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 32px 20px;
+            text-align: center;
+            color: #565959;
+        }
+
+        .offline-screen h3 {
+            color: #B12704;
+            margin-bottom: 8px;
+            font-size: 1.2rem;
+        }
     </style>
 </head>
 <body>
@@ -521,13 +560,15 @@
             <a class="menu-item" href="#">Eletrônicos</a>
             <a class="menu-item" href="#">Prime</a>
                 <div class="backend-switcher" style="margin-left: auto;">
-                    
+                    <button class="backend-btn" data-backend="mock" onclick="switchBackend('mock')">Mock</button>
                     <button class="backend-btn" data-backend="node" onclick="switchBackend('node')">Node.js</button>
                     <button class="backend-btn" data-backend="python" onclick="switchBackend('python')">Python</button>
                     <button class="backend-btn" data-backend="java" onclick="switchBackend('java')">Java</button>
                 </div>
         </nav>
     </header>
+
+    <div id="api-status" class="api-status" role="status" aria-live="polite"></div>
 
     <main id="main-content">
         <h1 class="page-title">Resultados</h1>
@@ -560,6 +601,7 @@
 
     <script>
         const BACKEND_URLS = {
+            mock: null,
             node: 'http://localhost:3000',
             java: 'http://localhost:8080/api',
             python: 'http://localhost:4000'
@@ -568,28 +610,95 @@
         let currentBackend = localStorage.getItem('backend') || 'mock';
         let API_URL = BACKEND_URLS[currentBackend] || null;
         let cart = [];
+        console.log(cart)
 
-        function switchBackend(backend) {
-            localStorage.setItem('backend', backend);
-            currentBackend = backend;
-            API_URL = BACKEND_URLS[backend] || null;
-            
+        function setActiveBackendButton(backend) {
             document.querySelectorAll('.backend-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             document.querySelector(`[data-backend="${backend}"]`).classList.add('active');
+        }
+
+        function showApiStatus(message, type = 'warning') {
+            const statusEl = document.getElementById('api-status');
+            statusEl.className = `api-status ${type}`;
+            statusEl.textContent = message;
+        }
+
+        function clearApiStatus() {
+            const statusEl = document.getElementById('api-status');
+            statusEl.className = 'api-status';
+            statusEl.textContent = '';
+        }
+
+        async function isBackendOnline(backend) {
+            if (backend === 'mock') return true;
+            const url = BACKEND_URLS[backend];
+            if (!url) return false;
+
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 3500);
+
+            try {
+                const response = await fetch(`${url}/products`, {
+                    signal: controller.signal
+                });
+                return response.ok;
+            } catch {
+                return false;
+            } finally {
+                clearTimeout(timeoutId);
+            }
+        }
+
+        async function switchBackend(backend) {
+            if (backend !== 'mock') {
+                const online = await isBackendOnline(backend);
+                if (!online) {
+                    showApiStatus(`A API de ${backend.toUpperCase()} não está no ar no momento.`);
+                    renderServerOffline(backend);
+                    return;
+                }
+            }
+
+            localStorage.setItem('backend', backend);
+            currentBackend = backend;
+            API_URL = BACKEND_URLS[backend] || null;
+
+            setActiveBackendButton(backend);
+            if (backend === 'mock') {
+                showApiStatus('Modo mock ativo.', 'success');
+            } else {
+                clearApiStatus();
+            }
             
             fetchProducts();
         }
 
-        function initBackend() {
+        async function initBackend() {
             const backend = localStorage.getItem('backend') || 'mock';
+
+            if (backend !== 'mock') {
+                const online = await isBackendOnline(backend);
+                if (!online) {
+                    currentBackend = 'mock';
+                    API_URL = null;
+                    localStorage.setItem('backend', 'mock');
+                    setActiveBackendButton('mock');
+                    showApiStatus(`A API de ${backend.toUpperCase()} não está no ar. Modo mock ativado.`);
+                    return;
+                }
+            }
+
             currentBackend = backend;
             API_URL = BACKEND_URLS[backend] || null;
-            document.querySelector(`[data-backend="${backend}"]`).classList.add('active');
-            document.querySelectorAll('.backend-btn').forEach(btn => {
-                if (btn.dataset.backend !== backend) btn.classList.remove('active');
-            });
+            setActiveBackendButton(backend);
+
+            if (backend === 'mock') {
+                showApiStatus('Modo mock ativo.', 'success');
+            } else {
+                clearApiStatus();
+            }
         }
 
         const fallbackImages = [
@@ -610,8 +719,10 @@
                 if (!response.ok) throw new Error('Erro ao carregar produtos');
                 const products = await response.json();
                 renderProducts(products);
+                clearApiStatus();
             } catch (error) {
-                renderMockProducts();
+                showApiStatus(`A API de ${currentBackend.toUpperCase()} não está no ar no momento.`);
+                renderServerOffline(currentBackend);
             }
         }
 
@@ -623,6 +734,17 @@
                 { id: 4, name: 'Fone Noise Cancelling', price: 899.00 },
             ];
             renderProducts(mock);
+        }
+
+        function renderServerOffline(backend) {
+            const container = document.getElementById('products-container');
+            container.innerHTML = `
+                <div class="offline-screen">
+                    <h3>Servidor fora do ar</h3>
+                    <p>Não foi possível conectar ao backend <strong>${backend.toUpperCase()}</strong>.</p>
+                    <p>Inicie a API e tente novamente, ou use o botão Mock.</p>
+                </div>
+            `;
         }
 
         function renderProducts(products) {
@@ -727,9 +849,13 @@
             `;
         }
 
-        updateCartUI();
-        initBackend();
-        fetchProducts();
+        async function initApp() {
+            updateCartUI();
+            await initBackend();
+            fetchProducts();
+        }
+
+        initApp();
     </script>
 </body>
 </html>
